@@ -14,8 +14,8 @@ x_ES = np.array([x0])
 v_ES = np.array([v0])
 x_RK2 = np.array([x0])
 v_RK2 = np.array([v0])
+
 nIter = int(T/dt)
-print(nIter)
 
 def position_velocity_update_EE(x, v, F, dt):
     a = F/m
@@ -43,11 +43,21 @@ def get_energies(x, v, m, k):
     KE_new = 1/2*m*v**2
     PE_new = 1/2*k*x**2
     E_new = KE_new + PE_new
-    return KE_new, PE_new, E_new
+    return np.array([KE_new, PE_new, E_new])
 
 def force_update(k, x):
     F_new = -k*x
     return F_new
+
+KE_EE = get_energies(x_EE, v_EE, m, k)[0]
+PE_EE = get_energies(x_EE, v_EE, m, k)[1]
+E_EE = get_energies(x_EE, v_EE, m, k)[2]
+KE_ES = get_energies(x_ES, v_ES, m, k)[0]
+PE_ES = get_energies(x_ES, v_ES, m, k)[1]
+E_ES = get_energies(x_ES, v_ES, m, k)[2]
+KE_RK2 = get_energies(x_RK2, v_RK2, m, k)[0]
+PE_RK2 = get_energies(x_RK2, v_RK2, m, k)[1]
+E_RK2 = get_energies(x_RK2, v_RK2, m, k)[2]
 
 for i in range(nIter):
     F_EE = force_update(k, x_EE[i])
@@ -64,23 +74,56 @@ for i in range(nIter):
     x_new_RK2, v_new_RK2 = position_velocity_update_RK2(x_RK2[i], v_RK2[i], F_RK2, dt, k)
     x_RK2 = np.append(x_RK2, x_new_RK2)
     v_RK2 = np.append(v_RK2, v_new_RK2)
+    
+    KE_EE = np.append(KE_EE, get_energies(x_new_EE, v_new_EE, m, k)[0])
+    PE_EE = np.append(PE_EE, get_energies(x_new_EE, v_new_EE, m, k)[1])
+    E_EE = np.append(E_EE, get_energies(x_new_EE, v_new_EE, m, k)[2])
+    KE_ES = np.append(KE_ES, get_energies(x_new_ES, v_new_ES, m, k)[0])
+    PE_ES = np.append(PE_ES, get_energies(x_new_ES, v_new_ES, m, k)[1])
+    E_ES = np.append(E_ES, get_energies(x_new_ES, v_new_ES, m, k)[2])
+    KE_RK2 = np.append(KE_RK2, get_energies(x_new_RK2, v_new_RK2, m, k)[0])
+    PE_RK2 = np.append(PE_RK2, get_energies(x_new_RK2, v_new_RK2, m, k)[1])
+    E_RK2 = np.append(E_RK2, get_energies(x_new_RK2, v_new_RK2, m, k)[2])
 
-fig, axs = plt.subplots(nrows=3, ncols=1)
+time = np.linspace(0,T,nIter+1)
 
-axs[0].plot(np.linspace(0,T,nIter+1),x_EE)
-axs[0].set_xlabel('Time (s)')
-axs[0].set_ylabel('Position (m)')
-axs[0].set_title('Spring Oscillator w/ Euler Explicit Method, dt=0.1')
+fig1, axs1 = plt.subplots(nrows=3, ncols=1)
 
-axs[1].plot(np.linspace(0,T,nIter+1),x_ES)
-axs[1].set_xlabel('Time (s)')
-axs[1].set_ylabel('Position (m)')
-axs[1].set_title('Spring Oscillator w/ Euler Symplectic Method, dt=0.1')
+axs1[0].plot(time, x_EE)
+axs1[0].set_xlabel('Time (s)')
+axs1[0].set_ylabel('Position (m)')
+axs1[0].set_title('Spring Oscillator w/ Euler Explicit Method, dt=0.1')
 
-axs[2].plot(np.linspace(0,T,nIter+1),x_RK2)
-axs[2].set_xlabel('Time (s)')
-axs[2].set_ylabel('Position (m)')
-axs[2].set_title("Spring Oscillator w/ RK2 (Heun's) Method, dt=0.1")
+axs1[1].plot(time, x_ES)
+axs1[1].set_xlabel('Time (s)')
+axs1[1].set_ylabel('Position (m)')
+axs1[1].set_title('Spring Oscillator w/ Euler Symplectic Method, dt=0.1')
 
-fig.tight_layout()
+axs1[2].plot(time, x_RK2)
+axs1[2].set_xlabel('Time (s)')
+axs1[2].set_ylabel('Position (m)')
+axs1[2].set_title("Spring Oscillator w/ RK2 (Heun's) Method, dt=0.1")
+
+fig1.tight_layout()
+plt.show()
+
+fig2, axs2 = plt.subplots(nrows=3, ncols=1)
+
+axs2[0].plot(time, KE_EE, time, PE_EE, time, E_EE)
+axs2[0].set_xlabel('Time (s)')
+axs2[0].set_ylabel('Energy (J)')
+axs2[0].set_title('Spring Oscillator w/ Euler Explicit Method, dt=0.1')
+
+axs2[1].plot(time, KE_ES, time, PE_ES, time, E_ES)
+axs2[1].set_xlabel('Time (s)')
+axs2[1].set_ylabel('Energy (J)')
+axs2[1].set_title('Spring Oscillator w/ Euler Symplectic Method, dt=0.1')
+
+axs2[2].plot(time, KE_RK2, time, PE_RK2, time, E_RK2)
+axs2[2].set_xlabel('Time (s)')
+axs2[2].set_ylabel('Energy (J)')
+axs2[2].set_title("Spring Oscillator w/ RK2 (Heun's) Method, dt=0.1")
+
+fig2.tight_layout()
+fig2.legend(['Kinetic', 'Potential', 'Total'], loc='lower right')
 plt.show()
