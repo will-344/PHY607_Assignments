@@ -39,6 +39,12 @@ def position_velocity_update_RK2(x, v, F, dt, k):
     v_new = v + 1/2*(k1v + k2v)*dt
     return x_new, v_new
 
+def get_energies(x, v, m, k):
+    KE_new = 1/2*m*v**2
+    PE_new = 1/2*k*x**2
+    E_new = KE_new + PE_new
+    return KE_new, PE_new, E_new
+
 def force_update(k, x):
     F_new = -k*x
     return F_new
