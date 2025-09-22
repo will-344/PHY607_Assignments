@@ -1,13 +1,13 @@
-""" Module that provides numerical solution to the following problems, with
+""" Module that provides numerical solutions to the following problems, with
 necessary constants/conditions taken from function inputs:
 
-ode1 (ODE): Steady 1D cylindrical heat conduction with no energy generation,
-    assuming constant thermal conductivity, with specified temperature boundary
+ODE: Steady 1D cylindrical heat conduction with no energy generation, assuming
+    constant thermal conductivity, with specified temperature boundary
     conditions.
      
-int1 (definite integral): Elliptical lift distribution for a finite wing,
-    assuming incompressible, inviscid, and steady flow, using lifting-line
-    theory in a uniform freestream with constant density.
+definite integral: Lift from an e lliptical lift distribution for a finite
+    wing, assuming incompressible, inviscid, and steady flow, using lifting-
+    line theory in a uniform freestream with constant density.
 """
 
 import numpy as np
