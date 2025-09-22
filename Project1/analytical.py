@@ -12,8 +12,8 @@ int1 (definite integral): Elliptical lift distribution for a finite wing,
 
 import numpy as np
 
-def ode1(temp1, temp2, rad1, rad2, drad):
-    n = round((rad2-rad1) / dr)
+def ode1(temp1, temp2, rad1, rad2, d_rad):
+    n = round((rad2-rad1) / d_rad)
     rad = np.linspace(rad1, rad2, n)
     temp = np.log(rad/rad1) / np.log(rad2/rad1) * (temp2-temp1) + temp1
     return temp, rad
