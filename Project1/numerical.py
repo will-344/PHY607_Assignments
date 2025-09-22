@@ -14,10 +14,11 @@ import numpy as np
 
 def euler(temp1, temp2, rad1, rad2, d_rad):
     x1 = np.array([temp1])
-    x2 = numpy.array([(temp2-temp1) / (rad1 * np.log(rad2/rad1))])
+    x2 = np.array([(temp2-temp1) / (rad1 * np.log(rad2/rad1))])
     iterations = round((rad2-rad1) / d_rad)
     rad = np.linspace(rad1, rad2, iterations)
-    for i in range(iterations):
+    
+    for i in range(iterations-1):
         x1new = x1[i] + x2[i]*d_rad
         x2new = x2[i] + -x2[i]/rad[i]*d_rad
         x1 = np.append(x1, x1new)
