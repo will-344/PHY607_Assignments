@@ -9,3 +9,10 @@ int1 (definite integral): Elliptical lift distribution for a finite wing,
     assuming incompressible, inviscid, and steady flow, using lifting-line
     theory in a uniform freestream with constant density.
 """
+
+import numpy as np
+
+def ode1(temp1, temp2, rad1, rad2, dr):
+    rad = np.linspace(rad1, rad2, round((rad2-rad1)/dr))
+    temp = np.log(rad/rad1)/np.log(rad2/rad1)*(temp2-temp1)+temp1
+    return temp, rad
