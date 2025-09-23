@@ -21,3 +21,10 @@ def ode1(temp1, temp2, rad1, rad2, d_rad):
 def int1(rho, vel, lamda, span):
     lift = rho*vel*lamda*span*np.pi/4
     return lift
+ 
+def int1_curve(rho, vel, lamda, span, segments):
+    theta = np.linspace(0, np.pi, segments)
+    y = span/2*np.cos(theta)
+    unit_lift = rho*vel*lamda * np.sqrt(1 - (2*y/span)**2)
+    return unit_lift, y
+
