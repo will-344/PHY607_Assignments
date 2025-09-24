@@ -11,6 +11,7 @@ definite integral: Lift from an e lliptical lift distribution for a finite
 """
 
 import numpy as np
+import scipy.integrate as sp
 
 def euler(temp1, temp2, rad1, rad2, d_rad):
     x1 = np.array([temp1])
@@ -56,7 +57,7 @@ def rk4(temp1, temp2, rad1, rad2, d_rad):
         x2 = np.append(x2, x2new)
     
     temp = x1
-    return temp, rad
+    return temp, rad    
 
 def riemann(rho, vel, lamda, span, intervals):
     area = 0
@@ -95,3 +96,21 @@ def trapezoidal(rho, vel, lamda, span, intervals):
         if i > 0:
             area += width*(height[i]+height[i-1])/2
     return area, height, y
+
+def trapezoidal_plot(height, y):
+    intervals = len(y)
+    height_bins = np.array([])
+    y_bins = np.array([])
+    for i in range(intervals):
+        height_bins = np.append(height_bins, [0, height[i]])
+        y_bins = np.append(y_bins, [y[i], y[i]])
+        if i == intervals-1:
+            break
+        height_bins = np.append(height_bins, height[i+1])
+        y_bins = np.append(y_bins, y[i+1])
+    return height_bins, y_bins
+
+def scipy_int_solve(rho, vel, lamda, span):
+    unit_lift = lambda y: rho*vel*lamda * np.sqrt(1-(2*y/span)**2)
+    lift = sp.quad(unit_lift, -span/2, span/2)
+    return lift[0]
