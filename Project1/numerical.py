@@ -57,7 +57,20 @@ def rk4(temp1, temp2, rad1, rad2, d_rad):
         x2 = np.append(x2, x2new)
     
     temp = x1
-    return temp, rad    
+    return temp, rad
+
+def scipy_ode_solve(temp1, temp2, rad1, rad2, d_rad):
+    def conduction(rad, temp_dtemp):
+        x1, x2 = temp_dtemp
+        dx1 = x2
+        dx2 = -x2/rad
+        return [dx1, dx2]
+    x0 = [temp1, (temp2-temp1) / (rad1 * np.log(rad2/rad1))]
+    iterations = round((rad2-rad1) / d_rad)
+    rad_bounds = [rad1, rad2]
+    rad_range = np.linspace(rad_bounds[0], rad_bounds[1], iterations)
+    solution = sp.solve_ivp(conduction, rad_bounds, x0, t_eval=rad_range)
+    return solution.y[0], solution.t
 
 def riemann(rho, vel, lamda, span, intervals):
     area = 0
@@ -114,3 +127,10 @@ def scipy_int_solve(rho, vel, lamda, span):
     unit_lift = lambda y: rho*vel*lamda * np.sqrt(1-(2*y/span)**2)
     lift = sp.quad(unit_lift, -span/2, span/2)
     return lift[0]
+
+def scipy_trapezoidal(rho, vel, lamda, span, intervals):
+    y = np.linspace(-span/2, span/2, intervals+1)
+    height = rho*vel*lamda * np.sqrt(1-(2*y/span)**2)
+    lift = sp.trapezoid(height, y)
+    print(height, y)
+    return lift
