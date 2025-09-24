@@ -65,8 +65,7 @@ def riemann(rho, vel, lamda, span, intervals):
     height = np.array([])
     y = np.linspace(-span/2, span/2, intervals)
     for i in range(intervals):
-        height = np.append(height, 
-                                rho*vel*lamda * np.sqrt(1 - (2*y[i]/span)**2))
+        height = np.append(height, rho*vel*lamda * np.sqrt(1-(2*y[i]/span)**2))
         if i == intervals-1:
             break
         area += width*height[i]
@@ -77,13 +76,22 @@ def riemann_plot(height, y):
     height_bins = np.array([])
     y_bins = np.array([])
     for i in range(intervals):
-        height_bins = np.append(height_bins, 0)
-        height_bins = np.append(height_bins, height[i])
-        y_bins = np.append(y_bins, y[i])
-        y_bins = np.append(y_bins, y[i])
+        height_bins = np.append(height_bins, [0, height[i]])
+        y_bins = np.append(y_bins, [y[i], y[i]])
         if i == intervals-1:
             break
         height_bins = np.append(height_bins, height[i])
         y_bins = np.append(y_bins, y[i+1])
     return height_bins, y_bins
-    
+
+def trapezoidal(rho, vel, lamda, span, intervals):
+    area = 0
+    width = span/intervals
+    intervals += 1
+    height = np.array([])
+    y = np.linspace(-span/2, span/2, intervals)
+    for i in range(intervals):
+        height = np.append(height, rho*vel*lamda * np.sqrt(1-(2*y[i]/span)**2))
+        if i > 0:
+            area += width*(height[i]+height[i-1])/2
+    return area, height, y
