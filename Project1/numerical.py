@@ -147,3 +147,9 @@ def scipy_trapezoidal(rho, vel, lamda, span, intervals):
     height = rho*vel*lamda * np.sqrt(1-(2*y/span)**2)
     lift = sp.trapezoid(height, y)
     return lift
+
+def scipy_simpson(rho, vel, lamda, span, intervals):
+    y = np.linspace(-span/2, span/2, intervals*2+1)
+    height = rho*vel*lamda * np.sqrt(1-(2*y/span)**2)
+    lift = sp.simpson(height, y)
+    return lift
