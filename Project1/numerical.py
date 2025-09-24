@@ -123,6 +123,20 @@ def trapezoidal_plot(height, y):
         y_bins = np.append(y_bins, y[i+1])
     return height_bins, y_bins
 
+def simpson(rho, vel, lamda, span, intervals):
+    area = 0
+    width = span/intervals
+    y = np.linspace(-span/2, span/2, intervals+1)
+    for i in range(intervals):
+        a = y[i]
+        b = y[i+1]
+        f_a = rho*vel*lamda * np.sqrt(1-(2*a/span)**2)
+        f_ab = rho*vel*lamda * np.sqrt(1-((a+b)/span)**2)
+        f_b = rho*vel*lamda * np.sqrt(1-(2*b/span)**2)
+        result = (b-a)/6 * (f_a + 4*f_ab + f_b)
+        area += result
+    return area
+
 def scipy_int_solve(rho, vel, lamda, span):
     unit_lift = lambda y: rho*vel*lamda * np.sqrt(1-(2*y/span)**2)
     lift = sp.quad(unit_lift, -span/2, span/2)
@@ -132,5 +146,4 @@ def scipy_trapezoidal(rho, vel, lamda, span, intervals):
     y = np.linspace(-span/2, span/2, intervals+1)
     height = rho*vel*lamda * np.sqrt(1-(2*y/span)**2)
     lift = sp.trapezoid(height, y)
-    print(height, y)
     return lift

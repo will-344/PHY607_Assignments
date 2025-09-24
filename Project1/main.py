@@ -13,9 +13,10 @@ lift_rie, unit_lift_rie, y_rie = num.riemann(1.225, 10, 1, 5, 4)
 unit_lift_plot_rie, y_plot_rie = num.riemann_plot(unit_lift_rie, y_rie)
 lift_trap, unit_lift_trap, y_trap = num.trapezoidal(1.225, 10, 1, 5, 4)
 unit_lift_plot_trap, y_plot_trap = num.trapezoidal_plot(unit_lift_trap, y_trap)
+lift_simp = num.simpson(1.225, 10, 1, 5, 4)
 lift_scipy = num.scipy_int_solve(1.225, 10, 1, 5)
 lift_trap_scipy = num.scipy_trapezoidal(1.225, 10, 1, 5, 4)
-print(lift_an, lift_rie, lift_trap, lift_scipy, lift_trap_scipy)
+print(lift_an, lift_rie, lift_trap, lift_simp, lift_scipy, lift_trap_scipy)
 
 fig1, ax1 = plt.subplots()
 ax1.plot(rad_an, temp_an, rad_eul, temp_eul, '.:', rad_rk4, temp_rk4, '.:',
