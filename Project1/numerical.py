@@ -77,7 +77,9 @@ def riemann_plot(height, y):
     height_bins = np.array([])
     y_bins = np.array([])
     for i in range(intervals):
+        height_bins = np.append(height_bins, 0)
         height_bins = np.append(height_bins, height[i])
+        y_bins = np.append(y_bins, y[i])
         y_bins = np.append(y_bins, y[i])
         if i == intervals-1:
             break
