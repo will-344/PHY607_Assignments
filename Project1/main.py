@@ -20,22 +20,35 @@ spanwise_step = 0.5
 temp_an, rad_an = an.ode1(temp1, temp2, radius1, radius2, radius_step/10)
 temp_eul, rad_eul = num.euler(temp1, temp2, radius1, radius2, radius_step)
 temp_rk4, rad_rk4 = num.rk4(temp1, temp2, radius1, radius2, radius_step)
-temp_scipy, rad_scipy = num.scipy_ode_solve(temp1, temp2, radius1, radius2, radius_step)
+temp_scipy, rad_scipy = num.scipy_ode_solve(temp1, temp2, radius1, radius2, 
+                                            radius_step)
 
 lify_intervals = round(span/spanwise_step)
 lift_an = an.int1(density, velocity, vortex_strength, span)
-unit_lift_an, y_an = an.int1_curve(density, velocity, vortex_strength, span, 50)
-lift_rie, unit_lift_rie, y_rie = num.riemann(density, velocity, vortex_strength, span, lify_intervals)
+unit_lift_an, y_an = an.int1_curve(density, velocity, vortex_strength, span, 
+                                   50)
+lift_rie, unit_lift_rie, y_rie = num.riemann(density, velocity, 
+                                             vortex_strength, span, 
+                                             lify_intervals)
 unit_lift_plot_rie, y_plot_rie = num.riemann_plot(unit_lift_rie, y_rie)
-lift_trap, unit_lift_trap, y_trap = num.trapezoidal(density, velocity, vortex_strength, span, lify_intervals)
-unit_lift_plot_trap, y_plot_trap = num.trapezoidal_plot(unit_lift_trap, y_trap)
-lift_simp = num.simpson(density, velocity, vortex_strength, span, lify_intervals)
+lift_trap, unit_lift_trap, y_trap = num.trapezoidal(density, velocity, 
+                                                    vortex_strength, span, 
+                                                    lify_intervals)
+unit_lift_plot_trap, y_plot_trap = num.trapezoidal_plot(unit_lift_trap, 
+                                                        y_trap)
+lift_simp = num.simpson(density, velocity, vortex_strength, span, 
+                        lify_intervals)
 lift_scipy = num.scipy_int_solve(density, velocity, vortex_strength, span)
-lift_trap_scipy = num.scipy_trapezoidal(density, velocity, vortex_strength, span, lify_intervals)
-lift_simp_scipy = num.scipy_simpson(density, velocity, vortex_strength, span, lify_intervals)
+lift_trap_scipy = num.scipy_trapezoidal(density, velocity, vortex_strength, 
+                                        span, lify_intervals)
+lift_simp_scipy = num.scipy_simpson(density, velocity, vortex_strength, span, 
+                                    lify_intervals)
 
-lift_labels = np.array(['Exact', 'Riemann Sum', 'Trapezoidal Rule', 'Simpsons Rule', 'SciPy Generic', 'SciPy Trapezoidal', 'SciPy Simpsons'])
-lift_values = np.array([lift_an, lift_rie, lift_trap, lift_simp, lift_scipy, lift_trap_scipy, lift_simp_scipy])
+lift_labels = np.array(['Exact', 'Riemann Sum', 'Trapezoidal Rule', 
+                        'Simpsons Rule', 'SciPy Generic', 'SciPy Trapezoidal', 
+                        'SciPy Simpsons'])
+lift_values = np.array([lift_an, lift_rie, lift_trap, lift_simp, lift_scipy, 
+                        lift_trap_scipy, lift_simp_scipy])
 lifts = np.c_[lift_values, lift_labels]
 print('Lift results, number of intervals =', lify_intervals, ':')
 print(lifts)
