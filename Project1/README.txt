@@ -5,6 +5,8 @@ This purpose of this project is to compare numerical methods for solving
 ordinary differential equations and definite integrals with their exact 
 solutions to determine the accuracy of the methods.
 
+This project requires three Python libraries: Matplotlib, NumPy, and SciPy
+
 Three Python code files are required produce results for this project, all of 
 which must be located in the same directory:
 
